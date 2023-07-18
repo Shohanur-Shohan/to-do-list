@@ -1,30 +1,43 @@
 
-import { CheckBoxRounded } from "@mui/icons-material";
-import { ClearRounded } from "@mui/icons-material";
+import { HighlightOffOutlined } from "@mui/icons-material";
 import { useState } from "react";
 
 
 const Hero = () => {
 
     const [list, setList] = useState([])
-    const [item, setItem] = useState("");
+    const [item, setItem] = useState('');
+    // const [btnText, setBtnText] = useState("incomplete");
     
     const addToList = () => {
-        list.push(item);
-        setList([...list]);
-    }
-
-    const itemRemove = (index) =>{
-        list.splice(index, 1);
-        setList([...list]);
+        // list.push(item);
+        // setList([...list]);
+        setList([...list,  {text: item, completed: false }]);
+        setItem('');
         
     }
-    // const itemCheck = () => {
-    //     document.getElementById("complete").innerText = "Completed";
-    // }
-    const itemCheck = (index) => {
-        alert(index + " completed")
+
+
+    // const itemRemove = (index) => {
+    //     const updatedTodos = list.filter((_, i) => i !== index);
+    //     setList(updatedTodos);
+    //   };
+    
+    const itemRemove = (index) => {
+        const updatedTodos = [...list];
+        updatedTodos.splice(index, 1);
+        setList(updatedTodos);
       };
+      
+      
+    
+    const completeBtn = (index) => {
+    const updatedTodos = [...list];
+    updatedTodos[index].completed = !updatedTodos[index].completed;
+    setList(updatedTodos);
+    };
+
+    
 
 
     return (
@@ -42,14 +55,15 @@ const Hero = () => {
                 list.length>0?(
                     list.map((element, index) => {
                         return(
-                            <div>
-                                <div className='flex w-full px-4 py-3 mt-3 text-lg text-white bg-gray-800 border-gray-700 rounded-md sm:p-4 '>
-                                    <p className='mr-4'>{index}</p>
-                                    <p className='w-3/4 text-white'>{element}</p>
-                                    <div className='w-1/4 text-right'>                            
-                                        <button id="complete"></button>
-                                        <button onClick={()=>{itemCheck(index)}} className='hover:text-green-500'><CheckBoxRounded /></button>
-                                        <button onClick={()=>{itemRemove(index)}} className='text-red-800 hover:text-red-400'><ClearRounded /></button>
+                            <div key={index}>
+                                <div className='flex justify-between w-full px-4 py-3 mt-3 text-lg text-white bg-gray-800 border-gray-700 rounded-md sm:p-4'>
+                                    <div className='flex my-auto'>
+                                    <p className='mr-4 '>{index}</p>
+                                    <p className='text-white '>{element.text}</p>
+                                    </div>
+                                    <div className='flex my-auto text-right'>                            
+                                        <button onClick={()=>{completeBtn(index)}} className='pt-1 pb-1 pl-5 pr-5 border border-green-600 hover:text-black rounded-3xl hover:bg-green-600 '>{element.completed ? 'Completed' : 'incomplete'}</button>
+                                        <button onClick={()=>{itemRemove(index)}} className='w-10 ml-2 text-red-800 hover:text-red-400'><HighlightOffOutlined /></button>
                                     </div>
                                 </div>                   
                             </div>
@@ -85,5 +99,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
-// when i click itemCheck(index) . i want to show a text in that clicked item  inside of complete id . 
